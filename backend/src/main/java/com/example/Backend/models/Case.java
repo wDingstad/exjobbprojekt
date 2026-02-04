@@ -1,0 +1,50 @@
+package com.example.Backend.models;
+
+import jakarta.persistence.*;
+
+import java.time.LocalDateTime;
+
+
+enum CaseStatus {
+    NEW,
+    BLOCKED,
+    FINISHED,
+    CLOSED,
+    INPROGRESS,
+    CANCELLED
+}
+
+
+@Entity
+@Table(name = "case")
+public class Case {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    private int id;
+    private String case_name;
+    private String info;
+    private int customer_id;
+    private LocalDateTime created_at;
+
+
+
+
+    public int getId(){
+        return id;
+    }
+
+    public String getCase_name() {
+        return case_name;
+    }
+    public String getInfo(){
+        return info;
+    }
+    public int getCustomer_id(){
+        return customer_id;
+    }
+    public LocalDateTime getCreated_at(){
+        return created_at;
+    }
+}
