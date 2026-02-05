@@ -16,7 +16,7 @@ enum CaseStatus {
 
 
 @Entity
-@Table(name = "case")
+@Table(name = "cases")
 public class Case {
 
     @Id
