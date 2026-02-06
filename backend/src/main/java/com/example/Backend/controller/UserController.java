@@ -4,9 +4,7 @@ package com.example.Backend.controller;
 import com.example.Backend.models.User;
 import com.example.Backend.repository.UserRepository;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,6 +29,15 @@ public class UserController {
                 .map(user -> ResponseEntity.ok().body(user))
                 .orElse(ResponseEntity.notFound().build());
     }
+
+
+    @PostMapping("/users")
+    public ResponseEntity<User> createUser(@RequestBody User user){
+        User savedUser = userRepository.save(user);
+        return ResponseEntity.ok(savedUser);
+    }
+
+
 
 
 }
