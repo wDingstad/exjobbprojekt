@@ -4,10 +4,7 @@ package com.example.Backend.controller;
 import com.example.Backend.models.Case;
 import com.example.Backend.repository.CaseRepository;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,6 +21,13 @@ public class CaseController {
     @GetMapping("/cases")
     public List<Case> getAllCases(){
         return caseRepository.findAll();
+    }
+
+    @GetMapping("/cases/{id}")
+    public ResponseEntity<Case> findCaseById(@PathVariable Integer id){
+        return caseRepository.findById(id)
+                .map(foundcase -> ResponseEntity.ok().body(foundcase))
+                .orElse(ResponseEntity.notFound().build());
     }
 
 
