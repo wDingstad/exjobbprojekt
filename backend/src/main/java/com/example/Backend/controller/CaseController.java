@@ -28,8 +28,8 @@ public class CaseController {
 
 
     @PostMapping("/cases")
-    public ResponseEntity<Case> createUser(@RequestBody Case case){
-        Case savedCase = caseRepository.save(case);
+    public ResponseEntity<Case> createCase(@RequestBody Case newCase){
+        Case savedCase = caseRepository.save(newCase);
         return ResponseEntity.ok(savedCase);
     }
 
