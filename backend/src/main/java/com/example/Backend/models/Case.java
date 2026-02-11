@@ -75,6 +75,9 @@ public class Case {
     public void setCreated_at(LocalDateTime created_at) {
         this.created_at = created_at;
     }
+    public String getStatus(){
+        return status;
+    }
     public void setStatus(String status){
         this.status = status;
     }

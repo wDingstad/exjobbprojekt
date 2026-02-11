@@ -6,6 +6,7 @@ import com.example.Backend.dto.UserDTO;
 import com.example.Backend.models.Case;
 import com.example.Backend.repository.CaseRepository;
 import com.example.Backend.service.CaseService;
+import org.apache.catalina.connector.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -64,5 +65,26 @@ public class CaseController {
         caseService.removeUser(caseId, userId);
         return ResponseEntity.ok().build();
 
+    }
+
+    @PostMapping("/cases/{id}")
+    public ResponseEntity<Case> updateCase(@PathVariable Integer id, @RequestBody Case updateCase0){
+        return caseRepository.findById(id)
+                .map(foundcase ->{
+                    foundcase.setCase_name(foundcase.getCase_name());
+                    foundcase.setInfo(foundcase.getInfo());
+                    foundcase.setStatus(foundcase.getStatus());
+                    return ResponseEntity.ok(foundcase);
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping ("/cases/{id}")
+    public ResponseEntity<?> deleteCase(@PathVariable Integer id){
+        return caseRepository.findById(id)
+                .map(foundcase -> {
+                    return ResponseEntity.ok().build();
+                })
+                .orElse(ResponseEntity.notFound().build());
     }
 }
