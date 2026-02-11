@@ -5,9 +5,10 @@ import com.example.Backend.models.Case;
 import com.example.Backend.repository.CaseRepository;
 import com.example.Backend.repository.UserRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class UserService {
 
     private final JdbcTemplate jdbcTemplate;
@@ -29,13 +30,13 @@ public class UserService {
     """;
 
         return jdbcTemplate.query(sql,
-                (rs, rowNum) -> new CaseDTO(  // ← Lägg till ( före rs
+                (rs, rowNum) -> new CaseDTO(
                         rs.getInt("id"),
                         rs.getString("case_name"),
                         rs.getString("info"),
                         rs.getInt("customer_id"),
                         rs.getString("status")
-                ),  // ← Flytta ) hit
+                ),
                 userId
         );
     }

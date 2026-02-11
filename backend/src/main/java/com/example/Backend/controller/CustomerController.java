@@ -3,6 +3,7 @@ package com.example.Backend.controller;
 
 import com.example.Backend.models.Customer;
 import com.example.Backend.repository.CustomerRepository;
+import org.apache.catalina.connector.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,12 +29,40 @@ public class CustomerController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-
     @PostMapping("/customers")
     public ResponseEntity<Customer> createCustomer(@RequestBody Customer customer){
         Customer savedCustomer = customerRepository.save(customer);
         return ResponseEntity.ok(savedCustomer);
     }
+
+    @PostMapping("/customers/{id}")
+    public ResponseEntity<Customer> updateCustomer(@PathVariable Integer id, @RequestBody Customer updatedCustomer){
+        return customerRepository.findById(id)
+                .map(customer -> {
+                    customer.setCustomer_name(updatedCustomer.getCustomer_name());
+                    customer.setOrganisation_number(updatedCustomer.getOrganisation_number());
+                    customer.setCustomer_email(updatedCustomer.getCustomer_email());
+                    customer.setCustomer_number(updatedCustomer.getCustomer_number());
+                    Customer saved = customerRepository.save(customer);
+                    return ResponseEntity.ok(saved);
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping ("/customers/{id}")
+    public ResponseEntity<?> deleteCustomer(@PathVariable Integer id){
+        return customerRepository.findById(id)
+                .map(customer ->{
+                    customerRepository.delete(customer);
+                    return ResponseEntity.ok().build();
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+
+
+
+
 
 
 }
