@@ -25,10 +25,17 @@ services:
       - db
 
   frontend:
-    build: ./frontend
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile.dev  # Använd dev-Dockerfile
     container_name: fullstack-frontend
     ports:
-      - "5173:80"
+      - "5173:5173"  # Ändrat från 80 till 5173 (Vite default)
+    volumes:
+      - ./frontend:/app  # Synka hela frontend-mappen
+      - /app/node_modules  # Förhindra att node_modules skrivs över
+    environment:
+      - CHOKIDAR_USEPOLLING=true  # För Windows/macOS hot-reload
     depends_on:
       - backend
 

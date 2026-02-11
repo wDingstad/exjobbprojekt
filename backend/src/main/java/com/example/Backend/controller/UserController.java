@@ -1,8 +1,11 @@
 package com.example.Backend.controller;
 
 
+import com.example.Backend.dto.CaseDTO;
 import com.example.Backend.models.User;
 import com.example.Backend.repository.UserRepository;
+import com.example.Backend.service.CaseService;
+import com.example.Backend.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,10 +15,13 @@ import java.util.List;
 public class UserController {
 
     private final UserRepository userRepository;
+    private final UserService userService;
 
 
-    public UserController(UserRepository userRepository){
+
+    public UserController(UserRepository userRepository, UserService userService){
         this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     @GetMapping("/users")
@@ -30,11 +36,16 @@ public class UserController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-
     @PostMapping("/users")
     public ResponseEntity<User> createUser(@RequestBody User user){
         User savedUser = userRepository.save(user);
         return ResponseEntity.ok(savedUser);
+    }
+
+    @GetMapping("/users/{userId}/cases")
+    public ResponseEntity<List<CaseDTO>> getCasesForUser(@PathVariable Integer userId){
+        List<CaseDTO> cases = userService.getCasesForUser(userId);
+        return ResponseEntity.ok(cases);
     }
 
 

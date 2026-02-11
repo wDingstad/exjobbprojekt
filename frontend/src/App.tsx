@@ -1,33 +1,58 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
+import type { User } from './types/user'; 
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  
+
+  const [data, setData] = useState<User[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+
+useEffect(() => {
+  setLoading(true); // Sätt loading till true när fetch börjar
+  
+  fetch('http://localhost:8080/users')
+    .then(response => {
+      if(!response.ok){
+        throw new Error('Ingen response från servern');
+      }
+      return response.json();
+    })
+    .then((data: User[]) => {
+      setData(data);
+      setLoading(false);
+    })
+    .catch(error => {
+      setError(error.message);
+      setLoading(false);
+    });
+}, []);
+
+  if(loading) return <div>vänta!!!!....!!!!</div>
+  if(error) return <div>error: {error}</div>
 
   return (
     <>
       <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <h1>Users</h1>
+        <ul>
+        {data.map(user => (
+            <li key={user.id}>
+              {user.first_name} - 
+              {user.last_name} - 
+              {user.phone_number} - 
+              {user.email}
+            </li>
+        ))}
+        </ul>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+
+
+
     </>
   )
 }
