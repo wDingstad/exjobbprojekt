@@ -3,6 +3,7 @@ package com.example.Backend.controller;
 
 import com.example.Backend.dto.AssignUserRequest;
 import com.example.Backend.dto.UserDTO;
+import com.example.Backend.dto.UpdateStatusRequest;
 import com.example.Backend.models.Case;
 import com.example.Backend.repository.CaseRepository;
 import com.example.Backend.service.CaseService;
@@ -68,4 +69,12 @@ public class CaseController {
         caseService.removeUser(caseId, userId);
         return ResponseEntity.ok().build();
     }
+
+    @PatchMapping ("/cases/{id}/id")
+    public ResponseEntity<Case> updateStatus(@PathVariable Integer id, @RequestBody UpdateStatusRequest request){
+        Case updated = caseService.updateStatus(id, request.getStatus());
+        return ResponseEntity.ok(updated);
+    }
+
+
 }

@@ -14,13 +14,13 @@ import java.util.List;
 @RestController
 public class UserController {
 
-    private final UserRepository userRepository;
+    //private final UserRepository userRepository;
     private final UserService userService;
 
 
 
     public UserController(UserRepository userRepository, UserService userService){
-        this.userRepository = userRepository;
+        //this.userRepository = userRepository;
         this.userService = userService;
     }
 

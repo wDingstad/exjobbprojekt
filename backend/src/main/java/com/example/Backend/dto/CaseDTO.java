@@ -27,10 +27,9 @@ public class CaseDTO {
         this.id = id;
     }
 
-    public String getInfo (String info){
-        return info;
+    public String getInfo(){
+        return this.info;
     }
-
     public void setInfo(String info){
         this.info = info;
     }

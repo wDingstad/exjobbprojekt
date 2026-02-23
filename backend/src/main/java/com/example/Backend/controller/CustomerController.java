@@ -5,6 +5,7 @@ import com.example.Backend.models.Case;
 import com.example.Backend.models.Customer;
 import com.example.Backend.repository.CaseRepository;
 import com.example.Backend.repository.CustomerRepository;
+import com.example.Backend.service.CustomerService;
 import org.apache.catalina.connector.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,60 +15,49 @@ import java.util.List;
 @RestController
 public class CustomerController {
 
-    private final CustomerRepository customerRepository;
-    private final CaseRepository caseRepository;
+    //private final CustomerRepository customerRepository;
+    //private final CaseRepository caseRepository;
+    private final CustomerService customerService;
 
-
-    public CustomerController(CustomerRepository customerRepository, CaseRepository caseRepository){
-        this.customerRepository = customerRepository;
-        this.caseRepository = caseRepository;
+    public CustomerController(CustomerRepository customerRepository, CaseRepository caseRepository, CustomerService customerService){
+        //this.customerRepository = customerRepository;
+        //this.caseRepository = caseRepository;
+        this.customerService = customerService;
     }
 
     @GetMapping("/customers")
     public List<Customer> getAllCustomers(){
-        return customerRepository.findAll();
+        return customerService.getAllCustomers();
     }
+
+
     @GetMapping("/customers/{id}")
     public ResponseEntity<Customer> getCustomerById(@PathVariable Integer id){
-        return customerRepository.findById(id)
-                .map(customer -> ResponseEntity.ok().body(customer))
-                .orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(customerService.getCustomerById(id));
     }
 
     @PostMapping("/customers")
     public ResponseEntity<Customer> createCustomer(@RequestBody Customer customer){
-        Customer savedCustomer = customerRepository.save(customer);
-        return ResponseEntity.ok(savedCustomer);
+        return ResponseEntity.ok(customerService.createCustomer(customer));
     }
 
     @PostMapping("/customers/{id}")
-    public ResponseEntity<Customer> updateCustomer(@PathVariable Integer id, @RequestBody Customer updatedCustomer){
-        return customerRepository.findById(id)
-                .map(customer -> {
-                    customer.setCustomer_name(updatedCustomer.getCustomer_name());
-                    customer.setOrganisation_number(updatedCustomer.getOrganisation_number());
-                    customer.setCustomer_email(updatedCustomer.getCustomer_email());
-                    customer.setCustomer_number(updatedCustomer.getCustomer_number());
-                    Customer saved = customerRepository.save(customer);
-                    return ResponseEntity.ok(saved);
-                })
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<Customer> updateCustomer(@PathVariable Integer id, @RequestBody Customer updatedCustomer) {
+        return ResponseEntity.ok(customerService.updateCustomer(id, updatedCustomer));
     }
 
     @DeleteMapping ("/customers/{id}")
     public ResponseEntity<?> deleteCustomer(@PathVariable Integer id){
-        return customerRepository.findById(id)
-                .map(customer ->{
-                    customerRepository.delete(customer);
-                    return ResponseEntity.ok().build();
-                })
-                .orElse(ResponseEntity.notFound().build());
+        customerService.deleteCustomer(id);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{customerId}/cases")
     public ResponseEntity <List<Case>> getCasesForCustomer(@PathVariable Integer customerId){
-        List<Case> cases = caseRepository.findByCustomerId(customerId);
-        return ResponseEntity.ok(cases);
+        return ResponseEntity.ok(customerService.getCasesForCustomer(customerId));
+
+
+
     }
 
 

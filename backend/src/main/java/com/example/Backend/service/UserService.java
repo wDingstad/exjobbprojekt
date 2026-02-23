@@ -38,13 +38,13 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User updateUser(Integer id, User updateUser){
+    public User updateUser(Integer id, User updatedUser){
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        user.setFirst_name(updateUser.getFirst_name());
-        user.setLast_name(updateUser.getLast_name());
-        user.setEmail(updateUser.getEmail());
-        user.setPhone_number(updateUser.getPhone_number());
+        user.setFirst_name(updatedUser.getFirst_name());
+        user.setLast_name(updatedUser.getLast_name());
+        user.setEmail(updatedUser.getEmail());
+        user.setPhone_number(updatedUser.getPhone_number());
         return userRepository.save(user);
     }
 
