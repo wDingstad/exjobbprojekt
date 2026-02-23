@@ -26,50 +26,35 @@ public class UserController {
 
     @GetMapping("/users")
     public List<User> getAllUsers(){
-       return userRepository.findAll();
+       return userService.getAllUsers();
     }
 
     @GetMapping("/users/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Integer id){
-        return userRepository.findById(id)
-                .map(user -> ResponseEntity.ok().body(user))
-                .orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(userService.getUserById(id));
     }
 
     @PostMapping("/users")
     public ResponseEntity<User> createUser(@RequestBody User user){
-        User savedUser = userRepository.save(user);
-        return ResponseEntity.ok(savedUser);
+        return ResponseEntity.ok(userService.createUser(user));
+
     }
 
     @GetMapping("/users/{userId}/cases")
     public ResponseEntity<List<CaseDTO>> getCasesForUser(@PathVariable Integer userId){
-        List<CaseDTO> cases = userService.getCasesForUser(userId);
-        return ResponseEntity.ok(cases);
+        return ResponseEntity.ok(userService.getCasesForUser(userId));
     }
 
     @PostMapping("/users/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Integer id, @RequestBody User updateUser){
-        return userRepository.findById(id)
-                .map(user -> {
-                    user.setFirst_name(updateUser.getFirst_name());
-                    user.setLast_name(updateUser.getLast_name());
-                    user.setEmail(updateUser.getEmail());
-                    user.setPhone_number(updateUser.getEmail());
-                    User saved = userRepository.save(user);
-                    return ResponseEntity.ok(saved);
-                })
-                .orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(userService.updateUser(id, updateUser));
     }
 
     @DeleteMapping("/users/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Integer id){
-        return userRepository.findById(id)
-                .map(user -> {
-                    userRepository.delete(user);
-                    return ResponseEntity.ok().build();
-                })
-                .orElse(ResponseEntity.notFound().build());
+        userService.deleteUser(id);
+        return ResponseEntity.ok().build();
+
     }
 
 

@@ -82,7 +82,19 @@ public class CaseService {
     }
 
     public void deleteCase(Integer caseId) {
+        if(!caseRepository.existsById(caseId)){
+            throw new RuntimeException("Case not found");
+        }
         caseRepository.deleteById(caseId);
+    }
+
+    public Case updateCase(Integer id, Case updateCase){
+        Case foundCase = caseRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Case not found"));
+        foundCase.setCase_name(updateCase.getCase_name());
+        foundCase.setInfo(updateCase.getInfo());
+        foundCase.setStatus(updateCase.getStatus());
+        return caseRepository.save(foundCase);
     }
 
 

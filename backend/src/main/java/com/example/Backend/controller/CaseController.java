@@ -16,34 +16,40 @@ import java.util.List;
 //@RequestMapping("/cases") //kan lägga till detta för at minska på /cases kod repetitioin
 public class CaseController {
 
-    private final CaseRepository caseRepository;
     private final CaseService caseService;
 
-
-    public CaseController(CaseRepository caseRepository, CaseService caseService){
-        this.caseRepository = caseRepository;
+    public CaseController(CaseService caseService){
         this.caseService = caseService;
     }
 
     @GetMapping("/cases")
     public List<Case> getAllCases(){
-        return caseRepository.findAll();
+        return caseService.getAllCases();
     }
 
     @GetMapping("/cases/{id}")
     public ResponseEntity<Case> findCaseById(@PathVariable Integer id){
-        return caseRepository.findById(id)
-                .map(foundcase -> ResponseEntity.ok().body(foundcase))
-                .orElse(ResponseEntity.notFound().build());
+        Case foundCase = caseService.getCaseById(id);
+        return ResponseEntity.ok(foundCase);
     }
-
 
     @PostMapping("/cases")
     public ResponseEntity<Case> createCase(@RequestBody Case newCase){
-        Case savedCase = caseRepository.save(newCase);
+        Case savedCase = caseService.createCase(newCase.getCase_name(), newCase.getInfo(), newCase.getCustomerId());
         return ResponseEntity.ok(savedCase);
     }
 
+    @PutMapping("/cases/{id}")
+    public ResponseEntity<Case> updateCase(@PathVariable Integer id, @RequestBody Case updateCase){
+        Case updated = caseService.updateCase(id, updateCase);
+        return ResponseEntity.ok(updated);
+    }
+
+    @DeleteMapping("/cases/{id}")
+    public ResponseEntity<?> deleteCase(@PathVariable Integer id){
+        caseService.deleteCase(id);
+        return ResponseEntity.ok().build();
+    }
 
     @PostMapping("/cases/{caseId}/users")
     public ResponseEntity<?> assignUserToCase(@PathVariable Integer caseId, @RequestBody AssignUserRequest request){
@@ -58,33 +64,8 @@ public class CaseController {
     }
 
     @DeleteMapping("/cases/{caseId}/users/{userId}")
-    public ResponseEntity<?> removeUserFromCase(
-            @PathVariable Integer caseId,
-            @PathVariable Integer userId) {
-
+    public ResponseEntity<?> removeUserFromCase(@PathVariable Integer caseId, @PathVariable Integer userId){
         caseService.removeUser(caseId, userId);
         return ResponseEntity.ok().build();
-
-    }
-
-    @PostMapping("/cases/{id}")
-    public ResponseEntity<Case> updateCase(@PathVariable Integer id, @RequestBody Case updateCase0){
-        return caseRepository.findById(id)
-                .map(foundcase ->{
-                    foundcase.setCase_name(foundcase.getCase_name());
-                    foundcase.setInfo(foundcase.getInfo());
-                    foundcase.setStatus(foundcase.getStatus());
-                    return ResponseEntity.ok(foundcase);
-                })
-                .orElse(ResponseEntity.notFound().build());
-    }
-
-    @DeleteMapping ("/cases/{id}")
-    public ResponseEntity<?> deleteCase(@PathVariable Integer id){
-        return caseRepository.findById(id)
-                .map(foundcase -> {
-                    return ResponseEntity.ok().build();
-                })
-                .orElse(ResponseEntity.notFound().build());
     }
 }

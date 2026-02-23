@@ -11,7 +11,7 @@ public class Case {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
-    private int id;
+    private Integer id;
     private String case_name;
     private String info;
     private LocalDateTime created_at;
@@ -24,7 +24,7 @@ public class Case {
 
     }
 
-    public Case(String case_name, String info, int customer_id){
+    public Case(String case_name, String info, Integer customer_id){
         this.case_name = case_name;
         this.created_at = LocalDateTime.now();
         this.info = info;
@@ -35,7 +35,7 @@ public class Case {
 
 
 
-    public int getId(){
+    public Integer getId(){
         return id;
     }
 
@@ -51,10 +51,10 @@ public class Case {
     public void setInfo(String info){
         this.info = info;
     }
-    public Integer getcustomer_id(){
+    public Integer getCustomerId(){
         return customerId;
     }
-    public void setCustomer_id(Integer customerId){
+    public void setCustomerId(Integer customerId){
         this.customerId = customerId;
     }
     public LocalDateTime getCreated_at(){

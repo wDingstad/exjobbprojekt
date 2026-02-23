@@ -2,6 +2,7 @@ package com.example.Backend.service;
 
 import com.example.Backend.dto.CaseDTO;
 import com.example.Backend.models.Case;
+import com.example.Backend.models.User;
 import com.example.Backend.repository.CaseRepository;
 import com.example.Backend.repository.UserRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -13,12 +14,56 @@ public class UserService {
 
     private final JdbcTemplate jdbcTemplate;
     private final CaseRepository caseRepository;
+    private final UserRepository userRepository;
 
 
-    public UserService(JdbcTemplate jdbcTemplate, CaseRepository caseRepository){
+    public UserService(JdbcTemplate jdbcTemplate, CaseRepository caseRepository, UserRepository userRepository){
         this.jdbcTemplate = jdbcTemplate;
         this.caseRepository = caseRepository;
+        this.userRepository = userRepository;
     }
+
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    public User getUserById(Integer id){
+        return userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+    }
+
+    public User createUser(User user){
+        return userRepository.save(user);
+    }
+
+    public User updateUser(Integer id, User updateUser){
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.setFirst_name(updateUser.getFirst_name());
+        user.setLast_name(updateUser.getLast_name());
+        user.setEmail(updateUser.getEmail());
+        user.setPhone_number(updateUser.getPhone_number());
+        return userRepository.save(user);
+    }
+
+    public void deleteUser(Integer id) {
+        if (!userRepository.existsById(id)) {
+            throw new RuntimeException("User not found");
+        }
+        userRepository.deleteById(id);
+    }
+
+
+
+
+
+
+
+
+
+
 
     public List<CaseDTO> getCasesForUser(Integer userId){
 
