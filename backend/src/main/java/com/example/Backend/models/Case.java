@@ -1,19 +1,7 @@
 package com.example.Backend.models;
 
 import jakarta.persistence.*;
-import org.springframework.cglib.core.Local;
-
 import java.time.LocalDateTime;
-
-
-enum CaseStatus {
-    NEW,
-    BLOCKED,
-    FINISHED,
-    CLOSED,
-    INPROGRESS,
-    CANCELLED
-}
 
 
 @Entity
@@ -26,22 +14,22 @@ public class Case {
     private int id;
     private String case_name;
     private String info;
-    private int customer_id;
     private LocalDateTime created_at;
-    private String status;
-
+    @Enumerated(EnumType.STRING) // sparar "OPEN", "BLOCKED" osv. i databasen istället för 0, 1, 2...
+    private CaseStatus status;
+    @Column(name = "customer_id")
+    private Integer customerId;
 
     public Case(){
 
     }
 
-    public Case(String case_name, String info, int customer_id, LocalDateTime created_at, String status){
+    public Case(String case_name, String info, int customer_id){
         this.case_name = case_name;
-        this.created_at = created_at;
+        this.created_at = LocalDateTime.now();
         this.info = info;
-        this.customer_id = customer_id;
-        this.status = status;
-
+        this.customerId = customer_id;
+        this.status = CaseStatus.OPEN;
 
     }
 
@@ -63,11 +51,11 @@ public class Case {
     public void setInfo(String info){
         this.info = info;
     }
-    public int getCustomer_id(){
-        return customer_id;
+    public Integer getcustomer_id(){
+        return customerId;
     }
-    public void setCustomer_id(int customer_id){
-        this.customer_id = customer_id;
+    public void setCustomer_id(Integer customerId){
+        this.customerId = customerId;
     }
     public LocalDateTime getCreated_at(){
         return created_at;
@@ -75,11 +63,11 @@ public class Case {
     public void setCreated_at(LocalDateTime created_at) {
         this.created_at = created_at;
     }
-    public String getStatus(){
-        return status;
-    }
-    public void setStatus(String status){
-        this.status = status;
-    }
+
+
+    public CaseStatus getStatus() {
+        return status; }
+    public void setStatus(CaseStatus status) {
+        this.status = status; }
 
 }

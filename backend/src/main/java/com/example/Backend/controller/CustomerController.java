@@ -1,7 +1,9 @@
 package com.example.Backend.controller;
 
 
+import com.example.Backend.models.Case;
 import com.example.Backend.models.Customer;
+import com.example.Backend.repository.CaseRepository;
 import com.example.Backend.repository.CustomerRepository;
 import org.apache.catalina.connector.Response;
 import org.springframework.http.ResponseEntity;
@@ -13,9 +15,12 @@ import java.util.List;
 public class CustomerController {
 
     private final CustomerRepository customerRepository;
+    private final CaseRepository caseRepository;
 
-    public CustomerController(CustomerRepository customerRepository){
+
+    public CustomerController(CustomerRepository customerRepository, CaseRepository caseRepository){
         this.customerRepository = customerRepository;
+        this.caseRepository = caseRepository;
     }
 
     @GetMapping("/customers")
@@ -59,9 +64,11 @@ public class CustomerController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-
-
-
+    @GetMapping("/{customerId}/cases")
+    public ResponseEntity <List<Case>> getCasesForCustomer(@PathVariable Integer customerId){
+        List<Case> cases = caseRepository.findByCustomerId(customerId);
+        return ResponseEntity.ok(cases);
+    }
 
 
 

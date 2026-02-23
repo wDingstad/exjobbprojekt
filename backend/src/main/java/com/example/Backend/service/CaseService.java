@@ -2,7 +2,10 @@ package com.example.Backend.service;
 
 
 import com.example.Backend.dto.UserDTO;
+import com.example.Backend.models.Case;
+import com.example.Backend.models.CaseStatus;
 import com.example.Backend.models.User;
+import com.example.Backend.repository.CaseRepository;
 import com.example.Backend.repository.UserRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -15,11 +18,13 @@ public class CaseService {
 
     private final JdbcTemplate jdbcTemplate;
     private final UserRepository userRepository;
+    private final CaseRepository caseRepository;
 
 
-    public CaseService(JdbcTemplate jdbcTemplate, UserRepository userRepository){
+    public CaseService(JdbcTemplate jdbcTemplate, UserRepository userRepository, CaseRepository caseRepository){
         this.jdbcTemplate = jdbcTemplate;
         this.userRepository = userRepository;
+        this.caseRepository = caseRepository;
     }
 
 
@@ -55,6 +60,31 @@ public class CaseService {
         jdbcTemplate.update(sql, caseId, userId);
 
     }
+
+    public Case createCase(String case_name, String info, Integer customerId){
+        Case newCase = new Case(case_name, info, customerId);
+        return caseRepository.save(newCase);
+    }
+    public Case updateStatus(Integer case_id, CaseStatus newStatus){
+        Case foundCase = caseRepository.findById(case_id)
+                .orElseThrow(() -> new RuntimeException("Case not found"));
+        foundCase.setStatus(newStatus);
+        return caseRepository.save(foundCase);
+    }
+
+    public List <Case> getAllCases(){
+        return caseRepository.findAll();
+    }
+
+    public Case getCaseById(Integer caseId) {
+        return caseRepository.findById(caseId)
+                .orElseThrow(() -> new RuntimeException("Case not found"));
+    }
+
+    public void deleteCase(Integer caseId) {
+        caseRepository.deleteById(caseId);
+    }
+
 
 
 
