@@ -2,6 +2,8 @@ package com.example.Backend.models;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -19,6 +21,10 @@ public class Case {
     private CaseStatus status;
     @Column(name = "customer_id")
     private Integer customerId;
+
+
+    @OneToMany(mappedBy = "caseEntity", cascade = CascadeType.ALL)
+    private List<CaseProduct> products = new ArrayList<>();
 
     public Case(){
 
@@ -63,11 +69,16 @@ public class Case {
     public void setCreated_at(LocalDateTime created_at) {
         this.created_at = created_at;
     }
-
-
     public CaseStatus getStatus() {
         return status; }
     public void setStatus(CaseStatus status) {
         this.status = status; }
+
+    public List<CaseProduct> getProducts(){
+        return products;
+    }
+    public void setProducts(List<CaseProduct> products){
+        this.products = products;
+    }
 
 }
