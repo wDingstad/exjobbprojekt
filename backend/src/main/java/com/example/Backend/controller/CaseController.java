@@ -70,7 +70,7 @@ public class CaseController {
         return ResponseEntity.ok().build();
     }
 
-    @PatchMapping ("/cases/{id}/id")
+    @PatchMapping ("/cases/{id}/status")
     public ResponseEntity<Case> updateStatus(@PathVariable Integer id, @RequestBody UpdateStatusRequest request){
         Case updated = caseService.updateStatus(id, request.getStatus());
         return ResponseEntity.ok(updated);

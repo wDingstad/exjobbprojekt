@@ -14,7 +14,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     private Integer id;
-    private Integer article_number;
+    private Integer articleNumber;
     private String name;
     private String description;
     private BigDecimal price;
@@ -24,8 +24,8 @@ public class Product {
     public Product(){
 
     }
-    public Product(Integer article_number, String name, String description, BigDecimal price, String supplier){
-        this.article_number = article_number;
+    public Product(Integer articleNumber, String name, String description, BigDecimal price, String supplier){
+        this.articleNumber = articleNumber;
         this.name = name;
         this.description = description;
         this.price = price;
@@ -38,11 +38,11 @@ public class Product {
         return id;
     }
 
-    public Integer getArticle_number(){
-        return article_number;
+    public Integer getArticleNumber(){
+        return articleNumber;
     }
-    public void setArticle_number(Integer article_number){
-        this.article_number = article_number;
+    public void setArticleNumber(Integer articleNumber){
+        this.articleNumber = articleNumber;
     }
 
     public String getName(){

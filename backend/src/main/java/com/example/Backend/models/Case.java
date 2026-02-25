@@ -17,13 +17,13 @@ public class Case {
     private String case_name;
     private String info;
     private LocalDateTime created_at;
-    @Enumerated(EnumType.STRING) // sparar "OPEN", "BLOCKED" osv. i databasen istället för 0, 1, 2...
+    @Enumerated(EnumType.STRING) //status, sparas som 1,2,3,4,5
     private CaseStatus status;
     @Column(name = "customer_id")
     private Integer customerId;
 
 
-    @OneToMany(mappedBy = "caseEntity", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "caseObject", cascade = CascadeType.ALL)
     private List<CaseProduct> products = new ArrayList<>();
 
     public Case(){
