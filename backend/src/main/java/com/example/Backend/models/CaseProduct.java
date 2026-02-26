@@ -20,7 +20,7 @@ public class CaseProduct {
     private Case caseObject;
 
     @ManyToOne
-    @JoinColumn(name = "case_id", nullable = false)
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
     //undra om den ska va float? typ för volym eller något typ distans

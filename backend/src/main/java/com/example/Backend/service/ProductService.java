@@ -2,10 +2,12 @@ package com.example.Backend.service;
 
 import com.example.Backend.models.Product;
 import com.example.Backend.repository.ProductRepository;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
 
+@Service
 public class ProductService {
 
     private final ProductRepository productRepository;

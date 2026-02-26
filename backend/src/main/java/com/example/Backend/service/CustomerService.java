@@ -5,9 +5,11 @@ import com.example.Backend.models.Case;
 import com.example.Backend.models.Customer;
 import com.example.Backend.repository.CaseRepository;
 import com.example.Backend.repository.CustomerRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class CustomerService {
 
     private final CustomerRepository customerRepository;

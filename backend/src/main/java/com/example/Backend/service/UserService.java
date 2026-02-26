@@ -79,8 +79,9 @@ public class UserService {
                         rs.getInt("id"),
                         rs.getString("case_name"),
                         rs.getString("info"),
+                        rs.getString("status"),
                         rs.getInt("customer_id"),
-                        rs.getString("status")
+                        List.of()
                 ),
                 userId
         );
