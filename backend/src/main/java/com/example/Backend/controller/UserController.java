@@ -3,8 +3,6 @@ package com.example.Backend.controller;
 
 import com.example.Backend.dto.CaseDTO;
 import com.example.Backend.models.User;
-import com.example.Backend.repository.UserRepository;
-import com.example.Backend.service.CaseService;
 import com.example.Backend.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,13 +12,9 @@ import java.util.List;
 @RestController
 public class UserController {
 
-    //private final UserRepository userRepository;
     private final UserService userService;
 
-
-
-    public UserController(UserRepository userRepository, UserService userService){
-        //this.userRepository = userRepository;
+    public UserController(UserService userService){
         this.userService = userService;
     }
 
@@ -37,7 +31,6 @@ public class UserController {
     @PostMapping("/users")
     public ResponseEntity<User> createUser(@RequestBody User user){
         return ResponseEntity.ok(userService.createUser(user));
-
     }
 
     @GetMapping("/users/{userId}/cases")
@@ -54,10 +47,5 @@ public class UserController {
     public ResponseEntity<?> deleteUser(@PathVariable Integer id){
         userService.deleteUser(id);
         return ResponseEntity.ok().build();
-
     }
-
-
-
-
 }

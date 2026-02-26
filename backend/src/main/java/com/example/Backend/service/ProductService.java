@@ -22,7 +22,8 @@ public class ProductService {
     }
 
     public Product getProductByArticleNumber(Integer articleNumber) {
-        return productRepository.findByArticleNumber(articleNumber);
+        return productRepository.findByArticleNumber(articleNumber)
+                .orElseThrow(() -> new RuntimeException("Product not found with article number: " + articleNumber));
     }
 
     public Product getProductById(Integer productId){

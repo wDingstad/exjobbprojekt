@@ -14,7 +14,7 @@ public class AddProductToCase {
         return articleNumber;
     }
 
-    public void setProductId(Integer articleNumber) {
+    public void setArticleNumber(Integer articleNumber) {
         this.articleNumber = articleNumber;
     }
 
