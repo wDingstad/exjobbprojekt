@@ -1,60 +1,27 @@
-import { useEffect, useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import type { User } from './types/user'; 
-import './App.css'
+import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom';
+import UsersPage from './pages/UsersPage';
+import CustomersPage from './pages/CustomersPage';
+import ProductsPage from './pages/ProductsPage';
+import CasesPage from './pages/CasesPage';
 
-function App() {
-  
-
-  const [data, setData] = useState<User[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-
-useEffect(() => {
-  setLoading(true); // Sätt loading till true när fetch börjar
-  
-  fetch('http://localhost:8080/users')
-    .then(response => {
-      if(!response.ok){
-        throw new Error('Ingen response från servern');
-      }
-      return response.json();
-    })
-    .then((data: User[]) => {
-      setData(data);
-      setLoading(false);
-    })
-    .catch(error => {
-      setError(error.message);
-      setLoading(false);
-    });
-}, []);
-
-  if(loading) return <div>vänta!!!!....!!!!</div>
-  if(error) return <div>error: {error}</div>
-
+export default function App() {
   return (
-    <>
-      <div>
-        <h1>Users</h1>
-        <ul>
-        {data.map(user => (
-            <li key={user.id}>
-              {user.first_name} - 
-              {user.last_name} - 
-              {user.phone_number} - 
-              {user.email}
-            </li>
-        ))}
-        </ul>
-      </div>
-
-
-
-    </>
-  )
+    <BrowserRouter>
+      <nav>
+        <NavLink to="/users">Users</NavLink>
+        <NavLink to="/customers">Customers</NavLink>
+        <NavLink to="/products">Products</NavLink>
+        <NavLink to="/cases">Cases</NavLink>
+      </nav>
+      <main>
+        <Routes>
+          <Route path="/users" element={<UsersPage />} />
+          <Route path="/customers" element={<CustomersPage />} />
+          <Route path="/products" element={<ProductsPage />} />
+          <Route path="/cases" element={<CasesPage />} />
+          <Route path="/" element={<UsersPage />} />
+        </Routes>
+      </main>
+    </BrowserRouter>
+  );
 }
-
-export default App
