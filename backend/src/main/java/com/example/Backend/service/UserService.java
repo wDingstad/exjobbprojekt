@@ -5,6 +5,7 @@ import com.example.Backend.models.Case;
 import com.example.Backend.models.User;
 import com.example.Backend.repository.CaseRepository;
 import com.example.Backend.repository.UserRepository;
+import com.example.Backend.exception.ResourceNotFoundException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,7 @@ public class UserService {
 
     public User getUserById(Integer id){
         return userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
     }
 
@@ -40,7 +41,7 @@ public class UserService {
 
     public User updateUser(Integer id, User updatedUser){
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         user.setFirst_name(updatedUser.getFirst_name());
         user.setLast_name(updatedUser.getLast_name());
         user.setEmail(updatedUser.getEmail());
@@ -50,7 +51,7 @@ public class UserService {
 
     public void deleteUser(Integer id) {
         if (!userRepository.existsById(id)) {
-            throw new RuntimeException("User not found");
+            throw new ResourceNotFoundException("User not found");
         }
         userRepository.deleteById(id);
     }

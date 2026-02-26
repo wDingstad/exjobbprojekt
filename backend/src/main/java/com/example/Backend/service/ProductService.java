@@ -1,6 +1,7 @@
 package com.example.Backend.service;
 
 import com.example.Backend.models.Product;
+import com.example.Backend.exception.ResourceNotFoundException;
 import com.example.Backend.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
@@ -23,12 +24,12 @@ public class ProductService {
 
     public Product getProductByArticleNumber(Integer articleNumber) {
         return productRepository.findByArticleNumber(articleNumber)
-                .orElseThrow(() -> new RuntimeException("Product not found with article number: " + articleNumber));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with article number: " + articleNumber));
     }
 
     public Product getProductById(Integer productId){
         return productRepository.findById(productId)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
     }
 
     public Product createProduct(Integer articleNumber, String name, String description, BigDecimal price, String supplier){

@@ -1,6 +1,6 @@
 package com.example.Backend.service;
 
-import com.example.Backend.controller.CustomerController;
+import com.example.Backend.exception.ResourceNotFoundException;
 import com.example.Backend.models.Case;
 import com.example.Backend.models.Customer;
 import com.example.Backend.repository.CaseRepository;
@@ -28,7 +28,7 @@ public class CustomerService {
 
     public Customer getCustomerById(Integer id){
         return customerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
     }
 
     public Customer createCustomer(Customer customer){
@@ -37,7 +37,7 @@ public class CustomerService {
 
     public Customer updateCustomer(Integer id, Customer updatedCustomer){
         Customer customer = customerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
         customer.setCustomer_number(updatedCustomer.getCustomer_number());
         customer.setCustomer_name(updatedCustomer.getCustomer_name());
         customer.setCustomer_email(updatedCustomer.getCustomer_email());
@@ -47,7 +47,7 @@ public class CustomerService {
 
     public void deleteCustomer(Integer id){
         if(!customerRepository.existsById(id)){
-            throw new RuntimeException("Customer not found");
+            throw new ResourceNotFoundException("Customer not found");
         }
         customerRepository.deleteById(id);
     }
